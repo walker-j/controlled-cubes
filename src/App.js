@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import { Button, Slider } from "@blueprintjs/core";
+import { ChromePicker } from 'react-color';
 
 class App extends Component {
   render() {
@@ -15,7 +16,7 @@ class App extends Component {
           </p>
           <button>Test button</button>
           <Button 
-            intent="success" 
+            intent="primary" 
             text="button content"
             onClick={alert}
           />
@@ -25,6 +26,7 @@ class App extends Component {
                     stepSize={0.1}
                     labelStepSize={10}
                 />
+          {/* <ChromePicker /> */}
           <a
             className="App-link"
             href="https://reactjs.org"
