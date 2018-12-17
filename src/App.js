@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { Button, Slider } from "@blueprintjs/core";
+
 class App extends Component {
   render() {
     return (
@@ -11,6 +13,18 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
+          <button>Test button</button>
+          <Button 
+            intent="success" 
+            text="button content"
+            onClick={alert}
+          />
+          <Slider
+                    min={0}
+                    max={10}
+                    stepSize={0.1}
+                    labelStepSize={10}
+                />
           <a
             className="App-link"
             href="https://reactjs.org"
