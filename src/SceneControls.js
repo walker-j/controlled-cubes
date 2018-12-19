@@ -13,13 +13,14 @@ class BasicControls extends Component {
 					large={true}
 					onClick={this.props.onAddCube}
 				/>
-				<span className="primary-text ellipsed-text" style={{ paddingLeft: 24, paddingRight: 16 }}>Cubes in scene: {this.props.cubeCount}</span>
+				<span className="primary-text ellipsed-text" style={{ paddingLeft: 24, paddingRight: 18 }}>Cubes in scene: {this.props.cubeCount}</span>
 				<Button
 					disabled={this.props.isCameraDefault}
 					rightIcon="refresh"
 					minimal={true}
 					onClick={this.props.onResetCamera}
 					text="Camera"
+					style={{ marginRight: -4 }}
 				/>
 			</div>
 		);
@@ -54,7 +55,6 @@ class SizeControls extends Component {
 					icon="refresh"
 					minimal={true}
 					onClick={this.props.onResetValue}
-					style={{ marginRight: 4 }}
 				/>
 			</div>
 		);
