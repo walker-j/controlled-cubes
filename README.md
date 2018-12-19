@@ -7,6 +7,6 @@ See the live demo at:
 
 To build and deploy locally - clone and run:
 
-## `npm start`
+``npm start``
 
 in the project directory.
