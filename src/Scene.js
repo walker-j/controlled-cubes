@@ -14,9 +14,7 @@ class Scene extends Component {
 
         // construct the position vector here, because if we use 'new' within render,
         // React will think that things have changed when they have not.
-        this.cameraPosition = new THREE.Vector3(10, 8, 15);
         this.cameraVectoring = new THREE.Vector3(0, 0, 0);
-
         this.lightPosition = new THREE.Vector3(3, 13, 16);
 
         // this._onAnimate = () => {
@@ -41,6 +39,8 @@ class Scene extends Component {
 
     componentDidMount() {
         const controls = new OrbitControls(this.refs.camera, ReactDOM.findDOMNode(this.refs.renderer));
+        // controls.addEventListener('change', (event) => { this.props.onCameraChange(this.refs.camera.position); });
+        controls.addEventListener('change', (event) => { this.props.onCameraChange(event.target.object.position); });
         this.controls = controls;
     }
 
@@ -50,11 +50,12 @@ class Scene extends Component {
     }
 
     render() {
+        console.log('RENDER');
+        
         const containerWidth = this.props.containerWidth;
         const containerHeight = this.props.containerHeight;
         const cubeSize = this.props.cubeSize;
-
-        console.log('RENDER');
+        const cameraPosition = this.props.cameraPosition;
 
         const cubes = this.props.cubes.map(o =>
             <mesh
@@ -90,7 +91,7 @@ class Scene extends Component {
                         far={1000}
                         ref="camera"
                         lookAt={this.cameraVectoring}
-                        position={this.cameraPosition}
+                        position={cameraPosition}
                     />
                     <ambientLight
                         color={0xffffff}

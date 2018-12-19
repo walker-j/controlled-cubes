@@ -17,6 +17,7 @@ class BasicControls extends Component {
 				/>
 				<span className="primary-text ellipsed-text">{this.props.cubeCount} cubes in scene</span>
 				<Button
+					disabled={this.props.isCameraDefault}
 					icon="refresh"
 					minimal={true}
 					onClick={this.props.onResetCamera}
@@ -44,15 +45,6 @@ class SizeControls extends Component {
 						value={this.props.value}
 					/>
 				</div>
-				{/* <Slider
-                    min={0}
-                    max={10}
-                    stepSize={0.1}
-                    labelStepSize={10}
-                    onChange={this.getChangeHandler("value2")}
-                    value={this.state.value2}
-                    vertical={vertical}
-                /> */}
 				<Icon
 					icon="symbol-square"
 					iconSize={40}
@@ -103,10 +95,11 @@ class SceneControls extends Component {
 					cubeCount={this.props.cubeCount}
 					onAddCube={this.props.onAddCube}
 					onResetCamera={this.props.onResetCamera}
-					/>
+					isCameraDefault={this.props.isCameraDefault}
+				/>
 				<SizeControls
 					value={this.props.cubeSize}
-					isDefaultValue={this.props.atDefaultCubeSize}
+					isDefaultValue={this.props.isCubeDefaultSize}
 					onValueChange={this.props.onCubeSizeChange}
 					onResetValue={this.props.onResetCubeSize}
 				/>
@@ -122,15 +115,17 @@ class App extends Component {
 
 		this.idCounter = 0;
 		this.defaultCubeSize = 2;
+		this.defaultCameraPosition = new THREE.Vector3(10, 8, 15);
 
 		this.state = {
-			cameraAtDefault: true,
+			cameraPosition: this.defaultCameraPosition,
 			cubes: [
 				this.generateCube(),
 				this.generateCube(),
 			],
 			cubeSize: this.defaultCubeSize,
-			atDefaultCubeSize: true
+			isCameraDefault: true,
+			isCubeDefaultSize: true
 		}
 	}
 
@@ -145,9 +140,7 @@ class App extends Component {
 	}
 
 	randomColorHex() {
-		let r = '#' + this.randomRGBAsHex() + this.randomRGBAsHex() + this.randomRGBAsHex();
-		console.log(r);
-		return r;
+		return '#' + this.randomRGBAsHex() + this.randomRGBAsHex() + this.randomRGBAsHex();
 	}
 
 	randomRGBAsHex() {
@@ -159,29 +152,32 @@ class App extends Component {
 		return new THREE.Vector3((Math.random() * 10) - 5, (Math.random() * 10) - 5, (Math.random() * 10) - 5);
 	}
 
-	handleCameraDidReset() {
-		/*this.setState({
-			resetCamera: false
-		});*/
+	handleCameraChange(position) {
+		// Do we _need_ to update the cameraPosition state here? Are we just creating extra renders? 
+		this.setState({
+			cameraPosition: position.clone(),
+			isCameraDefault: false
+		});
 	}
 
 	handleCubeSizeChange(size) {
 		this.setState({
 			cubeSize: size,
-			atDefaultCubeSize: (size === this.defaultCubeSize)
+			isCubeDefaultSize: (size === this.defaultCubeSize)
 		});
 	}
 
 	handleResetCamera() {
-		// this.setState({
-		// 	resetCamera: true
-		// });
+		this.setState({
+			cameraPosition: this.defaultCameraPosition.clone(),
+			isCameraDefault: true
+		});
 	}
 
 	handleResetCubeSize() {
 		this.setState({
 			cubeSize: this.defaultCubeSize,
-			atDefaultCubeSize: true
+			isCubeDefaultSize: true
 		});
 	}
 
@@ -198,22 +194,20 @@ class App extends Component {
 				<SceneControls
 					cubeCount={this.state.cubes.length}
 					cubeSize={this.state.cubeSize}
-					atDefaultCubeSize={this.state.atDefaultCubeSize}
+					isCameraDefault={this.state.isCameraDefault}
+					isCubeDefaultSize={this.state.isCubeDefaultSize}
 					onCubeSizeChange={(size) => { this.handleCubeSizeChange(size); }}
 					onAddCube={() => { this.handleAddCube(); }}
 					onResetCamera={() => { this.handleResetCamera(); }}
 					onResetCubeSize={() => { this.handleResetCubeSize(); }}
 				/>
-				{/* <Scene
-					cubes={this.state.cubes}
-					onCameraDidReset={() => { this.handleCameraDidReset(); }}
-					resetCamera={this.state.resetCamera}
-				/> */}
 				<div className="scene-container">
 					<Scene
-						cameraAtDefault={this.state.cameraAtDefault}
+						cameraPosition={this.state.cameraPosition}
 						cubes={this.state.cubes}
 						cubeSize={this.state.cubeSize}
+						isCameraDefault={this.state.isCameraDefault}
+						onCameraChange={(position) => { this.handleCameraChange(position); }}
 					/>
 				</div>
 			</div>
