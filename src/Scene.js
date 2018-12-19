@@ -16,15 +16,8 @@ class Scene extends Component {
         // React will think that things have changed when they have not.
         this.cameraPosition = new THREE.Vector3(10, 8, 15);
         this.cameraVectoring = new THREE.Vector3(0, 0, 0);
-        this.lightPosition = new THREE.Vector3(11, 13, 16);
 
-        this.positions = [];
-        this.positions.push(this.randomPosition());
-        this.positions.push(this.randomPosition());
-
-        this.state = {
-            cubeRotation: new THREE.Euler(0, 0, 0),
-        };
+        this.lightPosition = new THREE.Vector3(3, 13, 16);
 
         // this._onAnimate = () => {
         //   // we will get this callback every frame
@@ -59,7 +52,8 @@ class Scene extends Component {
     render() {
         const containerWidth = this.props.containerWidth;
         const containerHeight = this.props.containerHeight;
-        
+        const cubeSize = this.props.cubeSize;
+
         console.log('RENDER');
 
         const cubes = this.props.cubes.map(o =>
@@ -67,9 +61,9 @@ class Scene extends Component {
                 key={o.id}
                 position={o.position}>
                 <boxGeometry
-                    width={1}
-                    height={1}
-                    depth={1}
+                    width={cubeSize}
+                    height={cubeSize}
+                    depth={cubeSize}
                 />
                 <meshLambertMaterial
                     color={o.color}

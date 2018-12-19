@@ -36,12 +36,23 @@ class SizeControls extends Component {
 				/>
 				<div className="slider-container">
 					<Slider
-						min={0}
+						min={1}
 						max={10}
 						stepSize={0.1}
-						labelStepSize={10}
+						labelStepSize={9}
+						onChange={this.props.onValueChange}
+						value={this.props.value}
 					/>
 				</div>
+				{/* <Slider
+                    min={0}
+                    max={10}
+                    stepSize={0.1}
+                    labelStepSize={10}
+                    onChange={this.getChangeHandler("value2")}
+                    value={this.state.value2}
+                    vertical={vertical}
+                /> */}
 				<Icon
 					icon="symbol-square"
 					iconSize={40}
@@ -49,6 +60,7 @@ class SizeControls extends Component {
 				<Button
 					icon="refresh"
 					minimal={true}
+					onClick={this.props.onResetValue}
 				/>
 			</div>
 		);
@@ -62,7 +74,7 @@ class ActiveObjectControls extends Component {
 				<div className="controls-row">
 					<span className="primary-text ellipsed-text"> Active Cube
 					</span>
-					<span> 1234vgdf5t </span>
+					<span>ID : 1234vgdf5t </span>
 				</div>
 				<div className="controls-row">
 					{/* TODO ensure the color-button is distinguishable from the sizing slider icons */}
@@ -89,8 +101,12 @@ class SceneControls extends Component {
 					cubeCount={this.props.cubeCount}
 					onAddCube={this.props.onAddCube}
 					onResetCamera={this.props.onResetCamera}
+					/>
+				<SizeControls
+					value={this.props.cubeSize}
+					onValueChange={this.props.onCubeSizeChange}
+					onResetValue={this.props.onResetCubeSize}
 				/>
-				<SizeControls />
 				<ActiveObjectControls />
 			</div>
 		);
@@ -102,12 +118,15 @@ class App extends Component {
 		super(props);
 
 		this.idCounter = 0;
+		this.defaultCubeSize = 2;
+
 		this.state = {
+			cameraAtDefault: true,
 			cubes: [
 				this.generateCube(),
 				this.generateCube(),
 			],
-			resetCamera: false
+			cubeSize: this.defaultCubeSize
 		}
 	}
 
@@ -124,7 +143,7 @@ class App extends Component {
 	randomColorHex() {
 		let r = '#' + this.randomRGBAsHex() + this.randomRGBAsHex() + this.randomRGBAsHex();
 		console.log(r);
-		return r; 
+		return r;
 	}
 
 	randomRGBAsHex() {
@@ -142,10 +161,22 @@ class App extends Component {
 		});*/
 	}
 
+	handleCubeSizeChange(size) {
+		this.setState({
+			cubeSize: size
+		});
+	}
+
 	handleResetCamera() {
 		// this.setState({
 		// 	resetCamera: true
 		// });
+	}
+
+	handleResetCubeSize() {
+		this.setState({
+			cubeSize: this.defaultCubeSize
+		});
 	}
 
 	handleAddCube() {
@@ -160,8 +191,12 @@ class App extends Component {
 			<div className="App" ref={(container) => { this.container = container }}>
 				<SceneControls
 					cubeCount={this.state.cubes.length}
+					cubeSize={this.state.cubeSize}
+					onCubeSizeChange={(size) => { this.handleCubeSizeChange(size); }}
 					onAddCube={() => { this.handleAddCube(); }}
-					onResetCamera={() => { this.handleResetCamera(); }} />
+					onResetCamera={() => { this.handleResetCamera(); }}
+					onResetCubeSize={() => { this.handleResetCubeSize(); }}
+				/>
 				{/* <Scene
 					cubes={this.state.cubes}
 					onCameraDidReset={() => { this.handleCameraDidReset(); }}
@@ -169,8 +204,10 @@ class App extends Component {
 				/> */}
 				<div className="scene-container">
 					<Scene
-						cubes={this.state.cubes} 
-						/>
+						cameraAtDefault={this.state.cameraAtDefault}
+						cubes={this.state.cubes}
+						cubeSize={this.state.cubeSize}
+					/>
 				</div>
 			</div>
 		);
