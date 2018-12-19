@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Scene from './Scene.js';
-import { Button, Icon, Slider } from "@blueprintjs/core";
+import { Button, Icon, Popover, Slider, Classes, Intent, H5, Position } from "@blueprintjs/core";
 import * as THREE from 'three'
 
 // import { ChromePicker } from 'react-color';
@@ -78,11 +78,33 @@ class ActiveObjectControls extends Component {
 						icon="tint"
 						className="color-button"
 					/>
-					<Button
-						icon="trash"
-						intent="danger"
-						minimal={true}
-					/>
+					<Popover
+						position={Position.BOTTOM_RIGHT}>
+						<Button
+							icon="trash"
+							intent={Intent.DANGER}
+							minimal={true}
+						/>
+						<div
+							key="text"
+							className="deletion-popover-content">
+							<H5>Confirm Deletion</H5>
+							<p>Are you sure you want to delete this?</p>
+							<div className="popover-buttons">
+								<Button
+									className={Classes.POPOVER_DISMISS}
+									style={{ marginRight: 10 }}>
+									Cancel
+                    			</Button>
+								<Button
+									intent={Intent.DANGER}
+									className={Classes.POPOVER_DISMISS}
+									onClick={() => this.props.onRemoveCube(id)}>
+									Delete
+                    			</Button>
+							</div>
+						</div>,
+					</Popover>
 				</div>
 				{/* <ChromePicker /> */}
 			</div>
@@ -108,11 +130,12 @@ class SceneControls extends Component {
 					onValueChange={this.props.onCubeSizeChange}
 					onResetValue={this.props.onResetCubeSize}
 				/>
-				{selectedCubeId && 
-				<ActiveObjectControls
-					selectedCubeId={this.props.selectedCubeId}
-				/>}
-				
+				{selectedCubeId &&
+					<ActiveObjectControls
+						selectedCubeId={this.props.selectedCubeId}
+						onRemoveCube={this.props.onRemoveCube}
+					/>}
+
 			</div>
 		);
 	}
@@ -206,8 +229,23 @@ class App extends Component {
 	}
 
 	handleRemoveCube(id) {
-		// T: remove from array
-		// T: reset selected cube id to null
+		let cubes = [...this.state.cubes];
+		console.log(cubes);
+		let indxToRemove;
+		for (let i = 0; i < cubes.length; i++) {
+			if (cubes[i].id.toString() === id) {
+				indxToRemove = i;
+				break;
+			}
+		}
+
+		if (indxToRemove != null) {
+			cubes.splice(indxToRemove, 1);
+			this.setState({
+				cubes: cubes,
+				selectedCubeId: null
+			});
+		}
 	}
 
 	render() {
@@ -218,8 +256,9 @@ class App extends Component {
 					cubeSize={this.state.cubeSize}
 					isCameraDefault={this.state.cameraPosition.equals(this.defaultCameraPosition)}
 					isCubeDefaultSize={(this.state.cubeSize === this.defaultCubeSize)}
-					onCubeSizeChange={(size) => { this.handleCubeSizeChange(size); }}
 					onAddCube={() => { this.handleAddCube(); }}
+					onCubeSizeChange={(size) => { this.handleCubeSizeChange(size); }}
+					onRemoveCube={(id) => { this.handleRemoveCube(id); }}
 					onResetCamera={() => { this.handleResetCamera(); }}
 					onResetCubeSize={() => { this.handleResetCubeSize(); }}
 					selectedCubeId={this.state.selectedCubeId}

@@ -87,8 +87,6 @@ class Scene extends Component {
     render() {
         console.log('RENDER');
 
-        
-
         const containerWidth = this.props.containerWidth;
         const containerHeight = this.props.containerHeight;
         const cubeSize = this.props.cubeSize;

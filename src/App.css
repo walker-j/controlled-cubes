@@ -7,12 +7,12 @@
 }
 
 .scene-container {
-	flex-grow: 10;
-	position: relative;
+    flex-grow: 10;
+    position: relative;
 }
 
 .scene-controls {
-	z-index: 20;
+    z-index: 20;
     position: absolute;
     top: 0;
     right: 0;
@@ -66,4 +66,14 @@
     border-radius: 50%;
     background-color: blue;
     background-image: none;
+}
+
+.deletion-popover-content {
+    padding: 12px;
+}
+
+.popover-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15;
 }
