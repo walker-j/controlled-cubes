@@ -34,12 +34,12 @@ class SizeControls extends Component {
 				/>
 				<div className="slider-container">
 					<Slider
-						min={0.2}
-						max={10}
-						stepSize={0.1}
 						labelStepSize={9}
 						labelRenderer={false}
+						max={10}
+						min={0.2}
 						onChange={this.props.onValueChange}
+						stepSize={0.1}
 						value={this.props.value}
 					/>
 				</div>
@@ -73,9 +73,9 @@ class ActiveObjectControls extends Component {
 					<Popover
 						position={Position.BOTTOM_LEFT}>
 						<Button
+							className="color-button"
 							icon="tint"
 							intent={Intent.WARNING}
-							className="color-button"
 							style={{ backgroundColor: this.props.selectedCubeColor }}
 						/>
 						<div>
@@ -92,9 +92,7 @@ class ActiveObjectControls extends Component {
 							intent={Intent.DANGER}
 							minimal={true}
 						/>
-						<div
-							key="text"
-							className="popover-content">
+						<div className="popover-content">
 							<H5>Confirm Deletion</H5>
 							<p>Are you sure you want to delete this?</p>
 							<div className="popover-buttons">
@@ -131,17 +129,17 @@ class SceneControls extends Component {
 					isCameraDefault={this.props.isCameraDefault}
 				/>
 				<SizeControls
-					value={this.props.cubeSize}
 					isDefaultValue={this.props.isCubeDefaultSize}
-					onValueChange={this.props.onCubeSizeChange}
 					onResetValue={this.props.onResetCubeSize}
+					onValueChange={this.props.onCubeSizeChange}
+					value={this.props.cubeSize}
 				/>
 				{selectedCubeId &&
 					<ActiveObjectControls
-						selectedCubeColor={this.props.selectedCubeColor}
-						selectedCubeId={selectedCubeId}
 						onCubeColorChange={this.props.onCubeColorChange}
 						onRemoveCube={this.props.onRemoveCube}
+						selectedCubeColor={this.props.selectedCubeColor}
+						selectedCubeId={selectedCubeId}
 					/>}
 
 			</div>
@@ -149,4 +147,4 @@ class SceneControls extends Component {
 	}
 }
 
-export default SceneControls
+export default SceneControls;

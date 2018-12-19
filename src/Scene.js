@@ -1,18 +1,19 @@
+import Dimensions from 'react-dimensions'
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import './App.css';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three'
 import threeOrbitControls from 'three-orbit-controls';
-import Dimensions from 'react-dimensions'
+import './App.css';
 
 var OrbitControls = threeOrbitControls(THREE);
 
 class Scene extends Component {
     constructor(props, context) {
         super(props, context);
-        
-        // Use 'new' here rather than within render, otherwise it messes with React change detection.
+
+        // Use 'new' here rather than within render,
+        // otherwise it can mess with React change detection.
         this.hoverColor = '#691919';
         this.selectedColor = '#a50909';
 
@@ -42,6 +43,16 @@ class Scene extends Component {
         this.rendererElement.removeEventListener('mousedown');
     }
 
+    getObjectsUnderMouse(mouseEvent) {
+        // Convert to normalized device coordinates (-1 to +1) of renderer 'viewport'
+        // TODO: use this.rendererElement.getBoundingClientRect() to make this calculation generic
+        this.mouse.x = (mouseEvent.clientX / this.props.containerWidth) * 2 - 1;
+        this.mouse.y = - ((mouseEvent.clientY - this.rendererElement.getBoundingClientRect().y) / this.props.containerHeight) * 2 + 1;
+        this.raycaster.setFromCamera(this.mouse, this.refs.camera);
+
+        return this.raycaster.intersectObjects(this.refs.scene.children, false);
+    }
+
     onMouseDown(event) {
         var intersect = this.getObjectsUnderMouse(event);
         if (intersect[0]) {
@@ -58,21 +69,11 @@ class Scene extends Component {
         }
     }
 
-    getObjectsUnderMouse(mouseEvent) {
-        // Convert to normalized device coordinates (-1 to +1) of renderer 'viewport'
-        // TODO: use this.rendererElement.getBoundingClientRect() to make this calculation generic
-        this.mouse.x = (mouseEvent.clientX / this.props.containerWidth) * 2 - 1;
-        this.mouse.y = - ((mouseEvent.clientY - this.rendererElement.getBoundingClientRect().y) / this.props.containerHeight) * 2 + 1;
-        this.raycaster.setFromCamera(this.mouse, this.refs.camera);
-
-        return this.raycaster.intersectObjects(this.refs.scene.children, false);
-    }
-
     render() {
+        const cameraPosition = this.props.cameraPosition;
         const containerWidth = this.props.containerWidth;
         const containerHeight = this.props.containerHeight;
         const cubeSize = this.props.cubeSize;
-        const cameraPosition = this.props.cameraPosition;
 
         const cubes = this.props.cubes.map(o => {
             let color = o.color;
@@ -87,9 +88,9 @@ class Scene extends Component {
                 position={o.position}
                 name={id}>
                 <boxGeometry
-                    width={cubeSize}
-                    height={cubeSize}
                     depth={cubeSize}
+                    height={cubeSize}
+                    width={cubeSize}
                 />
                 <meshLambertMaterial
                     color={color}
@@ -101,29 +102,29 @@ class Scene extends Component {
             <React3
                 antialias
                 clearColor={0x2d2d2d}
-                mainCamera="mainCamera"
-                width={containerWidth}
                 height={containerHeight}
+                mainCamera="mainCamera"
                 ref="renderer"
+                width={containerWidth}
             >
                 <scene ref="scene">
                     <perspectiveCamera
-                        name="mainCamera"
-                        fov={55}
                         aspect={containerWidth / containerHeight}
-                        near={0.1}
                         far={1000}
-                        ref="camera"
+                        fov={55}
                         lookAt={this.cameraVectoring}
+                        name="mainCamera"
+                        near={0.1}
                         position={cameraPosition}
+                        ref="camera"
                     />
                     <ambientLight
                         color={0xffffff}
                     />
                     <pointLight
                         color={0xffffff}
-                        position={this.lightPosition}
                         intensity={0.7}
+                        position={this.lightPosition}
                     />
                     {cubes}
                 </scene>

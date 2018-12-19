@@ -8,9 +8,9 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 
-		this.idCounter = 0;
 		this.defaultCubeSize = 2;
 		this.defaultCameraPosition = new THREE.Vector3(10, 8, 15);
+		this.idCounter = 0;
 
 		this.state = {
 			cameraPosition: this.defaultCameraPosition,
@@ -32,17 +32,11 @@ class App extends Component {
 		return cube;
 	}
 
-	randomColorHex() {
-		return '#' + this.randomRGBAsHex() + this.randomRGBAsHex() + this.randomRGBAsHex();
-	}
-
-	randomRGBAsHex() {
-		let hex = Number(Math.floor(Math.random() * 256)).toString(16);
-		return (hex.length < 2) ? "0" + hex : hex;
-	}
-
-	randomPosition() {
-		return new THREE.Vector3((Math.random() * 14) - 7, (Math.random() * 14) - 7, (Math.random() * 14) - 7);
+	handleAddCube() {
+		const cubes = this.state.cubes.slice();
+		this.setState({
+			cubes: cubes.concat([this.generateCube()])
+		});
 	}
 
 	handleCameraChange(position) {
@@ -62,12 +56,6 @@ class App extends Component {
 		this.setState({
 			cubes: newArray,
 			selectedCubeColor: color.hex
-		});
-	}
-
-	handleCubeSizeChange(size) {
-		this.setState({
-			cubeSize: size
 		});
 	}
 
@@ -95,22 +83,9 @@ class App extends Component {
 		}
 	}
 
-	handleResetCamera() {
+	handleCubeSizeChange(size) {
 		this.setState({
-			cameraPosition: this.defaultCameraPosition.clone()
-		});
-	}
-
-	handleResetCubeSize() {
-		this.setState({
-			cubeSize: this.defaultCubeSize
-		});
-	}
-
-	handleAddCube() {
-		const cubes = this.state.cubes.slice();
-		this.setState({
-			cubes: cubes.concat([this.generateCube()])
+			cubeSize: size
 		});
 	}
 
@@ -131,6 +106,31 @@ class App extends Component {
 				selectedCubeId: null
 			});
 		}
+	}
+
+	handleResetCamera() {
+		this.setState({
+			cameraPosition: this.defaultCameraPosition.clone()
+		});
+	}
+
+	handleResetCubeSize() {
+		this.setState({
+			cubeSize: this.defaultCubeSize
+		});
+	}
+
+	randomColorHex() {
+		return '#' + this.randomRGBAsHex() + this.randomRGBAsHex() + this.randomRGBAsHex();
+	}
+
+	randomPosition() {
+		return new THREE.Vector3((Math.random() * 14) - 7, (Math.random() * 14) - 7, (Math.random() * 14) - 7);
+	}
+
+	randomRGBAsHex() {
+		let hex = Number(Math.floor(Math.random() * 256)).toString(16);
+		return (hex.length < 2) ? "0" + hex : hex;
 	}
 
 	render() {
@@ -156,10 +156,10 @@ class App extends Component {
 						cubes={this.state.cubes}
 						cubeSize={this.state.cubeSize}
 						hoveredCubeId={this.state.hoveredCubeId}
-						selectedCubeId={this.state.selectedCubeId}
 						onCameraChange={(position) => { this.handleCameraChange(position); }}
 						onCubeHover={(id) => { this.handleCubeHover(id); }}
 						onCubeSelect={(id) => { this.handleCubeSelect(id); }}
+						selectedCubeId={this.state.selectedCubeId}
 					/>
 				</div>
 			</div>
