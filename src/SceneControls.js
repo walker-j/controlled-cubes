@@ -37,8 +37,8 @@ class SizeControls extends Component {
 					<Slider
 						labelStepSize={9}
 						labelRenderer={false}
-						max={10}
-						min={0.2}
+						max={10.5}
+						min={0.5}
 						onChange={this.props.onValueChange}
 						stepSize={0.1}
 						value={this.props.value}

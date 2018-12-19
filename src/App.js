@@ -8,8 +8,8 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 
-		this.defaultCubeSize = 2;
-		this.defaultCameraPosition = new THREE.Vector3(10, 8, 15);
+		this.defaultCubeSize = 5.5;
+		this.defaultCameraPosition = new THREE.Vector3(30, 24, 45);
 		this.idCounter = 0;
 
 		this.state = {
@@ -125,7 +125,7 @@ class App extends Component {
 	}
 
 	randomPosition() {
-		return new THREE.Vector3((Math.random() * 14) - 7, (Math.random() * 14) - 7, (Math.random() * 14) - 7);
+		return new THREE.Vector3((Math.random() * 40) - 20, (Math.random() * 40) - 20, (Math.random() * 40) - 20);
 	}
 
 	randomRGBAsHex() {
