@@ -119,13 +119,8 @@ class App extends Component {
 
 		this.state = {
 			cameraPosition: this.defaultCameraPosition,
-			cubes: [
-				this.generateCube(),
-				this.generateCube(),
-			],
-			cubeSize: this.defaultCubeSize,
-			isCameraDefault: true,
-			isCubeDefaultSize: true
+			cubes: [],
+			cubeSize: this.defaultCubeSize
 		}
 	}
 
@@ -149,35 +144,30 @@ class App extends Component {
 	}
 
 	randomPosition() {
-		return new THREE.Vector3((Math.random() * 10) - 5, (Math.random() * 10) - 5, (Math.random() * 10) - 5);
+		return new THREE.Vector3((Math.random() * 14) - 7, (Math.random() * 14) - 7, (Math.random() * 14) - 7);
 	}
 
 	handleCameraChange(position) {
-		// Do we _need_ to update the cameraPosition state here? Are we just creating extra renders? 
 		this.setState({
-			cameraPosition: position.clone(),
-			isCameraDefault: false
+			cameraPosition: position.clone()
 		});
 	}
 
 	handleCubeSizeChange(size) {
 		this.setState({
-			cubeSize: size,
-			isCubeDefaultSize: (size === this.defaultCubeSize)
+			cubeSize: size
 		});
 	}
 
 	handleResetCamera() {
 		this.setState({
-			cameraPosition: this.defaultCameraPosition.clone(),
-			isCameraDefault: true
+			cameraPosition: this.defaultCameraPosition.clone()
 		});
 	}
 
 	handleResetCubeSize() {
 		this.setState({
-			cubeSize: this.defaultCubeSize,
-			isCubeDefaultSize: true
+			cubeSize: this.defaultCubeSize
 		});
 	}
 
@@ -194,8 +184,8 @@ class App extends Component {
 				<SceneControls
 					cubeCount={this.state.cubes.length}
 					cubeSize={this.state.cubeSize}
-					isCameraDefault={this.state.isCameraDefault}
-					isCubeDefaultSize={this.state.isCubeDefaultSize}
+					isCameraDefault={this.state.cameraPosition.equals(this.defaultCameraPosition)}
+					isCubeDefaultSize={(this.state.cubeSize === this.defaultCubeSize)}
 					onCubeSizeChange={(size) => { this.handleCubeSizeChange(size); }}
 					onAddCube={() => { this.handleAddCube(); }}
 					onResetCamera={() => { this.handleResetCamera(); }}
@@ -206,7 +196,6 @@ class App extends Component {
 						cameraPosition={this.state.cameraPosition}
 						cubes={this.state.cubes}
 						cubeSize={this.state.cubeSize}
-						isCameraDefault={this.state.isCameraDefault}
 						onCameraChange={(position) => { this.handleCameraChange(position); }}
 					/>
 				</div>
