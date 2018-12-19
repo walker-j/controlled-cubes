@@ -1,15 +1,15 @@
 {
-  "main.css": "/controlled-cubes/static/css/main.14f6d82a.chunk.css",
-  "main.js": "/controlled-cubes/static/js/main.cbd3b911.chunk.js",
-  "main.js.map": "/controlled-cubes/static/js/main.cbd3b911.chunk.js.map",
+  "main.css": "/controlled-cubes/static/css/main.2dc686d4.chunk.css",
+  "main.js": "/controlled-cubes/static/js/main.159da977.chunk.js",
+  "main.js.map": "/controlled-cubes/static/js/main.159da977.chunk.js.map",
   "static/css/1.379c4ec8.chunk.css": "/controlled-cubes/static/css/1.379c4ec8.chunk.css",
-  "static/js/1.4d2f702f.chunk.js": "/controlled-cubes/static/js/1.4d2f702f.chunk.js",
-  "static/js/1.4d2f702f.chunk.js.map": "/controlled-cubes/static/js/1.4d2f702f.chunk.js.map",
+  "static/js/1.139a4547.chunk.js": "/controlled-cubes/static/js/1.139a4547.chunk.js",
+  "static/js/1.139a4547.chunk.js.map": "/controlled-cubes/static/js/1.139a4547.chunk.js.map",
   "runtime~main.js": "/controlled-cubes/static/js/runtime~main.1861f989.js",
   "runtime~main.js.map": "/controlled-cubes/static/js/runtime~main.1861f989.js.map",
-  "static/css/main.14f6d82a.chunk.css.map": "/controlled-cubes/static/css/main.14f6d82a.chunk.css.map",
   "static/css/1.379c4ec8.chunk.css.map": "/controlled-cubes/static/css/1.379c4ec8.chunk.css.map",
+  "static/css/main.2dc686d4.chunk.css.map": "/controlled-cubes/static/css/main.2dc686d4.chunk.css.map",
   "index.html": "/controlled-cubes/index.html",
-  "precache-manifest.3ff0a987a72e26a0f7435ff063d504d5.js": "/controlled-cubes/precache-manifest.3ff0a987a72e26a0f7435ff063d504d5.js",
+  "precache-manifest.0e8416614994c63dd2cacaf6e5fd518e.js": "/controlled-cubes/precache-manifest.0e8416614994c63dd2cacaf6e5fd518e.js",
   "service-worker.js": "/controlled-cubes/service-worker.js"
 }

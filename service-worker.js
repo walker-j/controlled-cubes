@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/controlled-cubes/precache-manifest.3ff0a987a72e26a0f7435ff063d504d5.js"
+  "/controlled-cubes/precache-manifest.0e8416614994c63dd2cacaf6e5fd518e.js"
 );
 
 workbox.clientsClaim();
