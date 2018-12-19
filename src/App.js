@@ -37,10 +37,11 @@ class SizeControls extends Component {
 				/>
 				<div className="slider-container">
 					<Slider
-						min={1}
+						min={0.2}
 						max={10}
 						stepSize={0.1}
 						labelStepSize={9}
+						//labelRenderer={false}
 						onChange={this.props.onValueChange}
 						value={this.props.value}
 					/>
@@ -62,12 +63,14 @@ class SizeControls extends Component {
 
 class ActiveObjectControls extends Component {
 	render() {
+		const id = this.props.selectedCubeId;
+
 		return (
 			<div className="active-obj-controls">
 				<div className="controls-row">
 					<span className="primary-text ellipsed-text"> Active Cube
 					</span>
-					<span>ID : 1234vgdf5t </span>
+					<span><span className="primary-text">ID:</span> {id} </span>
 				</div>
 				<div className="controls-row">
 					{/* TODO ensure the color-button is distinguishable from the sizing slider icons */}
@@ -89,6 +92,8 @@ class ActiveObjectControls extends Component {
 
 class SceneControls extends Component {
 	render() {
+		const selectedCubeId = this.props.selectedCubeId;
+
 		return (
 			<div className="scene-controls">
 				<BasicControls
@@ -103,7 +108,11 @@ class SceneControls extends Component {
 					onValueChange={this.props.onCubeSizeChange}
 					onResetValue={this.props.onResetCubeSize}
 				/>
-				<ActiveObjectControls />
+				{selectedCubeId && 
+				<ActiveObjectControls
+					selectedCubeId={this.props.selectedCubeId}
+				/>}
+				
 			</div>
 		);
 	}
@@ -120,7 +129,9 @@ class App extends Component {
 		this.state = {
 			cameraPosition: this.defaultCameraPosition,
 			cubes: [],
-			cubeSize: this.defaultCubeSize
+			cubeSize: this.defaultCubeSize,
+			hoveredCubeId: null,
+			selectedCubeId: null
 		}
 	}
 
@@ -159,6 +170,22 @@ class App extends Component {
 		});
 	}
 
+	handleCubeHover(id) {
+		if (id !== this.state.hoveredCubeId) {
+			this.setState({
+				hoveredCubeId: id
+			});
+		}
+	}
+
+	handleCubeSelect(id) {
+		if (id !== this.state.selectedCubeId) {
+			this.setState({
+				selectedCubeId: id
+			});
+		}
+	}
+
 	handleResetCamera() {
 		this.setState({
 			cameraPosition: this.defaultCameraPosition.clone()
@@ -178,6 +205,11 @@ class App extends Component {
 		});
 	}
 
+	handleRemoveCube(id) {
+		// T: remove from array
+		// T: reset selected cube id to null
+	}
+
 	render() {
 		return (
 			<div className="App" ref={(container) => { this.container = container }}>
@@ -190,13 +222,18 @@ class App extends Component {
 					onAddCube={() => { this.handleAddCube(); }}
 					onResetCamera={() => { this.handleResetCamera(); }}
 					onResetCubeSize={() => { this.handleResetCubeSize(); }}
+					selectedCubeId={this.state.selectedCubeId}
 				/>
 				<div className="scene-container">
 					<Scene
 						cameraPosition={this.state.cameraPosition}
 						cubes={this.state.cubes}
 						cubeSize={this.state.cubeSize}
+						hoveredCubeId={this.state.hoveredCubeId}
+						selectedCubeId={this.state.selectedCubeId}
 						onCameraChange={(position) => { this.handleCameraChange(position); }}
+						onCubeHover={(id) => { this.handleCubeHover(id); }}
+						onCubeSelect={(id) => { this.handleCubeSelect(id); }}
 					/>
 				</div>
 			</div>
