@@ -1,6 +1,7 @@
 import { Button, Icon, Popover, Slider, Classes, Intent, H5, Position } from "@blueprintjs/core";
 import React, { Component } from 'react';
 import { ChromePicker } from 'react-color';
+import './SceneControls.css';
 
 class BasicControls extends Component {
 	render() {
