@@ -11,32 +11,16 @@ var OrbitControls = threeOrbitControls(THREE);
 class Scene extends Component {
     constructor(props, context) {
         super(props, context);
-
-        this.hoverColor = '#FF0000';
-        this.selectedColor = '#00FF00';
+        
+        // Use 'new' here rather than within render, otherwise it messes with React change detection.
+        this.hoverColor = '#691919';
+        this.selectedColor = '#a50909';
 
         this.mouse = new THREE.Vector2();
         this.raycaster = new THREE.Raycaster();
 
-        // construct the position vector here, because if we use 'new' within render,
-        // React will think that things have changed when they have not.
         this.cameraVectoring = new THREE.Vector3(0, 0, 0);
         this.lightPosition = new THREE.Vector3(3, 13, 16);
-
-        // this._onAnimate = () => {
-        //   // we will get this callback every frame
-
-        //   // pretend cubeRotation is immutable.
-        //   // this helps with updates and pure rendering.
-        //   // React will be sure that the rotation has now updated.
-        //   this.setState({
-        // 	cubeRotation: new THREE.Euler(
-        // 	  this.state.cubeRotation.x + 0.01,
-        // 	  this.state.cubeRotation.y + 0.01,
-        // 	  0
-        // 	),
-        //   });
-        // };
     }
 
     componentDidMount() {
@@ -85,8 +69,6 @@ class Scene extends Component {
     }
 
     render() {
-        console.log('RENDER');
-
         const containerWidth = this.props.containerWidth;
         const containerHeight = this.props.containerHeight;
         const cubeSize = this.props.cubeSize;
@@ -123,7 +105,6 @@ class Scene extends Component {
                 width={containerWidth}
                 height={containerHeight}
                 ref="renderer"
-            //onAnimate={this._onAnimate}
             >
                 <scene ref="scene">
                     <perspectiveCamera
@@ -151,4 +132,5 @@ class Scene extends Component {
     }
 }
 
+// Wrapping scene in element which detects containers size as it changes
 export default Dimensions({ containerStyle: { position: "absolute", left: 0, right: 0, top: 0, bottom: 0 } })(Scene)

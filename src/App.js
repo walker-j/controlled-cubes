@@ -4,7 +4,7 @@ import Scene from './Scene.js';
 import { Button, Icon, Popover, Slider, Classes, Intent, H5, Position } from "@blueprintjs/core";
 import * as THREE from 'three'
 
-// import { ChromePicker } from 'react-color';
+import { ChromePicker } from 'react-color';
 
 class BasicControls extends Component {
 	render() {
@@ -41,7 +41,7 @@ class SizeControls extends Component {
 						max={10}
 						stepSize={0.1}
 						labelStepSize={9}
-						//labelRenderer={false}
+						labelRenderer={false}
 						onChange={this.props.onValueChange}
 						value={this.props.value}
 					/>
@@ -73,11 +73,21 @@ class ActiveObjectControls extends Component {
 					<span><span className="primary-text">ID:</span> {id} </span>
 				</div>
 				<div className="controls-row">
-					{/* TODO ensure the color-button is distinguishable from the sizing slider icons */}
-					<Button
-						icon="tint"
-						className="color-button"
-					/>
+					<Popover
+						position={Position.BOTTOM_LEFT}>
+						<Button
+							icon="tint"
+							intent={Intent.WARNING}
+							className="color-button"
+							style={{ backgroundColor: this.props.selectedCubeColor }}
+						/>
+						<div>
+							<ChromePicker
+								disableAlpha={true}
+								color={this.props.selectedCubeColor}
+								onChangeComplete={(color) => { this.props.onCubeColorChange(id, color); }} />
+						</div>
+					</Popover>
 					<Popover
 						position={Position.BOTTOM_RIGHT}>
 						<Button
@@ -87,7 +97,7 @@ class ActiveObjectControls extends Component {
 						/>
 						<div
 							key="text"
-							className="deletion-popover-content">
+							className="popover-content">
 							<H5>Confirm Deletion</H5>
 							<p>Are you sure you want to delete this?</p>
 							<div className="popover-buttons">
@@ -103,10 +113,9 @@ class ActiveObjectControls extends Component {
 									Delete
                     			</Button>
 							</div>
-						</div>,
+						</div>
 					</Popover>
 				</div>
-				{/* <ChromePicker /> */}
 			</div>
 		);
 	}
@@ -132,7 +141,9 @@ class SceneControls extends Component {
 				/>
 				{selectedCubeId &&
 					<ActiveObjectControls
-						selectedCubeId={this.props.selectedCubeId}
+						selectedCubeColor={this.props.selectedCubeColor}
+						selectedCubeId={selectedCubeId}
+						onCubeColorChange={this.props.onCubeColorChange}
 						onRemoveCube={this.props.onRemoveCube}
 					/>}
 
@@ -154,6 +165,7 @@ class App extends Component {
 			cubes: [],
 			cubeSize: this.defaultCubeSize,
 			hoveredCubeId: null,
+			selectedCubeColor: '',
 			selectedCubeId: null
 		}
 	}
@@ -187,6 +199,20 @@ class App extends Component {
 		});
 	}
 
+	handleCubeColorChange(id, color) {
+		let newArray = [...this.state.cubes];
+		for (let i = 0; i < newArray.length; i++) {
+			if (newArray[i].id.toString() === id) {
+				newArray[i].color = color.hex;
+				break;
+			}
+		}
+		this.setState({
+			cubes: newArray,
+			selectedCubeColor: color.hex
+		});
+	}
+
 	handleCubeSizeChange(size) {
 		this.setState({
 			cubeSize: size
@@ -203,8 +229,16 @@ class App extends Component {
 
 	handleCubeSelect(id) {
 		if (id !== this.state.selectedCubeId) {
+			let selectedCubeColor;
+			for (let i = 0; i < this.state.cubes.length; i++) {
+				if (this.state.cubes[i].id.toString() === id) {
+					selectedCubeColor = this.state.cubes[i].color;
+					break;
+				}
+			}
 			this.setState({
-				selectedCubeId: id
+				selectedCubeId: id,
+				selectedCubeColor: selectedCubeColor
 			});
 		}
 	}
@@ -257,10 +291,12 @@ class App extends Component {
 					isCameraDefault={this.state.cameraPosition.equals(this.defaultCameraPosition)}
 					isCubeDefaultSize={(this.state.cubeSize === this.defaultCubeSize)}
 					onAddCube={() => { this.handleAddCube(); }}
+					onCubeColorChange={(id, color) => { this.handleCubeColorChange(id, color); }}
 					onCubeSizeChange={(size) => { this.handleCubeSizeChange(size); }}
 					onRemoveCube={(id) => { this.handleRemoveCube(id); }}
 					onResetCamera={() => { this.handleResetCamera(); }}
 					onResetCubeSize={() => { this.handleResetCubeSize(); }}
+					selectedCubeColor={this.state.selectedCubeColor}
 					selectedCubeId={this.state.selectedCubeId}
 				/>
 				<div className="scene-container">
