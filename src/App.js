@@ -58,6 +58,7 @@ class SizeControls extends Component {
 					iconSize={40}
 				/>
 				<Button
+					disabled={this.props.isDefaultValue}
 					icon="refresh"
 					minimal={true}
 					onClick={this.props.onResetValue}
@@ -79,6 +80,7 @@ class ActiveObjectControls extends Component {
 				<div className="controls-row">
 					{/* TODO ensure the color-button is distinguishable from the sizing slider icons */}
 					<Button
+						icon="tint"
 						className="color-button"
 					/>
 					<Button
@@ -104,6 +106,7 @@ class SceneControls extends Component {
 					/>
 				<SizeControls
 					value={this.props.cubeSize}
+					isDefaultValue={this.props.atDefaultCubeSize}
 					onValueChange={this.props.onCubeSizeChange}
 					onResetValue={this.props.onResetCubeSize}
 				/>
@@ -126,7 +129,8 @@ class App extends Component {
 				this.generateCube(),
 				this.generateCube(),
 			],
-			cubeSize: this.defaultCubeSize
+			cubeSize: this.defaultCubeSize,
+			atDefaultCubeSize: true
 		}
 	}
 
@@ -163,7 +167,8 @@ class App extends Component {
 
 	handleCubeSizeChange(size) {
 		this.setState({
-			cubeSize: size
+			cubeSize: size,
+			atDefaultCubeSize: (size === this.defaultCubeSize)
 		});
 	}
 
@@ -175,7 +180,8 @@ class App extends Component {
 
 	handleResetCubeSize() {
 		this.setState({
-			cubeSize: this.defaultCubeSize
+			cubeSize: this.defaultCubeSize,
+			atDefaultCubeSize: true
 		});
 	}
 
@@ -192,6 +198,7 @@ class App extends Component {
 				<SceneControls
 					cubeCount={this.state.cubes.length}
 					cubeSize={this.state.cubeSize}
+					atDefaultCubeSize={this.state.atDefaultCubeSize}
 					onCubeSizeChange={(size) => { this.handleCubeSizeChange(size); }}
 					onAddCube={() => { this.handleAddCube(); }}
 					onResetCamera={() => { this.handleResetCamera(); }}
