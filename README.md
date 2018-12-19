@@ -1,9 +1,11 @@
-#controlled-cubes
+# controlled-cubes
 
-Embedding a threejs 3D scene with dynamic entities in a React app.
+See the live demo at:
+
+<https://walker-j.github.io/controlled-cubes/>
 
 
-To build and deploy locally, clone and run:
+To build and deploy locally: clone and run:
 
 ### `npm start`
 
